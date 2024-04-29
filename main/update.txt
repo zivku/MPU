@@ -1,0 +1,18 @@
+10/3:
+	1.UART通訊function建立
+	2.RFID功能重建
+	3.新增Xor運算作為 校驗RFID回復數據準確性
+10/11:
+	1.power meter 電壓讀取功能
+	2.power meter 電流讀取功能
+	3.power meter 累計功率啟用功能
+	4.power meter 累計功率停用功能
+	5.power meter 累計功率清零功能
+	6.power meter 累計功率讀取功能
+10/17:
+	1.j1772 CP pin adc讀取功能重建
+	2.relay功能重建
+10/24:
+	1.mkfifo讀取python json格式資訊功能建立
+	2.mkfifo寫入python json格式資訊功能建立
+	3.json封包解析功能建立

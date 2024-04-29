@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<egt>
+	<theme>
+		<property name="type">DefaultTheme</property>
+	</theme>
+	<widgets>
+		<widget name="Window0" type="TopWindow">
+			<property name="pixelformat">argb8888</property>
+			<property name="windowhint">automatic</property>
+			<property name="show">true</property>
+			<property name="width">800</property>
+			<property name="height">480</property>
+			<property name="fillflags">solid</property>
+			<widget name="IDLE" type="Window">
+				<property name="pixelformat">argb8888</property>
+				<property name="windowhint">automatic</property>
+				<property name="show">false</property>
+				<property name="width">800</property>
+				<property name="height">480</property>
+				<widget name="ImageLabel2" type="ImageLabel">
+					<property name="show">true</property>
+					<property name="width">1024</property>
+					<property name="height">600</property>
+					<property name="align">expand</property>
+					<property name="text_align">center</property>
+					<property name="showlabel">false</property>
+					<property name="image" keep_image_ratio="false">file:image/7_IDLE.jpg</property>
+					<property name="image_align">expand</property>
+				</widget>
+				<widget name="ImageLabel3" type="ImageLabel">
+					<property name="show">true</property>
+					<property name="x">138</property>
+					<property name="y">-118</property>
+					<property name="width">224</property>
+					<property name="height">236</property>
+					<property name="align">center_vertical</property>
+					<property name="text_align">center</property>
+					<property name="showlabel">false</property>
+					<property name="image">file:image/7_qr_btn.png</property>
+					<property name="image_align">center|expand</property>
+				</widget>
+				<widget name="ImageButton4" type="ImageButton">
+					<property name="show">true</property>
+					<property name="x">388</property>
+					<property name="y">-118</property>
+					<property name="width">224</property>
+					<property name="height">236</property>
+					<property name="align">center_vertical</property>
+					<property name="grab_mouse">true</property>
+					<property name="border_radius">4</property>
+					<property name="fillflags">blend</property>
+					<property name="color" id="button_bg" group="normal">00000000</property>
+					<property name="color" id="button_bg" group="active">00000000</property>
+					<property name="text_align">center</property>
+					<property name="showlabel">false</property>
+					<property name="image">file:image/7_rfid_btn.png</property>
+					<property name="image_align">center|expand</property>
+				</widget>
+			</widget>
+			<widget name="RFID" type="Window">
+				<property name="pixelformat">argb8888</property>
+				<property name="windowhint">automatic</property>
+				<property name="show">false</property>
+				<property name="width">800</property>
+				<property name="height">480</property>
+				<widget name="ImageLabel6" type="ImageLabel">
+					<property name="show">true</property>
+					<property name="width">1024</property>
+					<property name="height">600</property>
+					<property name="align">expand</property>
+					<property name="text_align">center</property>
+					<property name="showlabel">false</property>
+					<property name="image" keep_image_ratio="false">file:image/RFID.jpg</property>
+					<property name="image_align">expand</property>
+				</widget>
+			</widget>
+		</widget>
+	</widgets>
+</egt>
+
