@@ -1,0 +1,588 @@
+diff --git a/board/microchip/sama5/linux.config b/board/microchip/sama5/linux.config
+index d37b6c8..a3bc19b 100644
+--- a/board/microchip/sama5/linux.config
++++ b/board/microchip/sama5/linux.config
+@@ -1,4 +1,3 @@
+-# CONFIG_SWAP is not set
+ CONFIG_SYSVIPC=y
+ CONFIG_POSIX_MQUEUE=y
+ CONFIG_NO_HZ_IDLE=y
+@@ -17,7 +16,6 @@ CONFIG_USER_NS=y
+ CONFIG_BLK_DEV_INITRD=y
+ # CONFIG_KALLSYMS is not set
+ CONFIG_EMBEDDED=y
+-CONFIG_SLAB=y
+ CONFIG_ARCH_AT91=y
+ CONFIG_SOC_SAMA5D2=y
+ CONFIG_SOC_SAMA5D3=y
+@@ -33,11 +31,14 @@ CONFIG_KERNEL_MODE_NEON=y
+ CONFIG_PM_DEBUG=y
+ CONFIG_PM_ADVANCED_DEBUG=y
+ CONFIG_JUMP_LABEL=y
++# CONFIG_GCC_PLUGINS is not set
+ CONFIG_MODULES=y
+ CONFIG_MODULE_FORCE_LOAD=y
+ CONFIG_MODULE_UNLOAD=y
+ CONFIG_MODULE_FORCE_UNLOAD=y
+ # CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
++# CONFIG_SWAP is not set
++CONFIG_SLAB=y
+ CONFIG_CMA=y
+ CONFIG_CMA_DEBUGFS=y
+ CONFIG_NET=y
+@@ -61,10 +62,6 @@ CONFIG_NET_DSA_TAG_OCELOT=m
+ CONFIG_NET_DSA_TAG_OCELOT_8021Q=m
+ CONFIG_VLAN_8021Q=m
+ CONFIG_CAN=y
+-CONFIG_CAN_AT91=y
+-CONFIG_CAN_M_CAN=y
+-CONFIG_CAN_M_CAN_PLATFORM=y
+-CONFIG_MDIO_MSCC_MIIM=m
+ CONFIG_BT=y
+ CONFIG_BT_RFCOMM=y
+ CONFIG_BT_RFCOMM_TTY=y
+@@ -137,7 +134,6 @@ CONFIG_MACB=y
+ # CONFIG_NET_VENDOR_HISILICON is not set
+ # CONFIG_NET_VENDOR_HUAWEI is not set
+ # CONFIG_NET_VENDOR_INTEL is not set
+-# CONFIG_NET_VENDOR_MICROSOFT is not set
+ # CONFIG_NET_VENDOR_LITEX is not set
+ # CONFIG_NET_VENDOR_MARVELL is not set
+ # CONFIG_NET_VENDOR_MELLANOX is not set
+@@ -146,9 +142,10 @@ CONFIG_KS8851=m
+ CONFIG_KS8851_MLL=m
+ CONFIG_ENC28J60=m
+ CONFIG_ENCX24J600=m
++# CONFIG_NET_VENDOR_MICROSOFT is not set
++# CONFIG_NET_VENDOR_NI is not set
+ # CONFIG_NET_VENDOR_NATSEMI is not set
+ # CONFIG_NET_VENDOR_NETRONOME is not set
+-# CONFIG_NET_VENDOR_NI is not set
+ # CONFIG_NET_VENDOR_PENSANDO is not set
+ # CONFIG_NET_VENDOR_QUALCOMM is not set
+ # CONFIG_NET_VENDOR_RENESAS is not set
+@@ -170,6 +167,10 @@ CONFIG_MICREL_PHY=y
+ CONFIG_MICROCHIP_T1_PHY=m
+ CONFIG_MICROSEMI_PHY=m
+ CONFIG_SMSC_PHY=m
++CONFIG_CAN_AT91=y
++CONFIG_CAN_M_CAN=y
++CONFIG_CAN_M_CAN_PLATFORM=y
++CONFIG_MDIO_MSCC_MIIM=m
+ CONFIG_USB_LAN78XX=m
+ CONFIG_LIBERTAS_THINFIRM=m
+ CONFIG_LIBERTAS_THINFIRM_USB=m
+@@ -240,11 +241,11 @@ CONFIG_USB_VIDEO_CLASS=m
+ CONFIG_V4L_PLATFORM_DRIVERS=y
+ CONFIG_VIDEO_ATMEL_ISI=y
+ CONFIG_VIDEO_MICROCHIP_ISC=y
++CONFIG_VIDEO_MT9V032=m
+ CONFIG_VIDEO_OV2640=m
+ CONFIG_VIDEO_OV5640=m
+ CONFIG_VIDEO_OV7670=m
+ CONFIG_VIDEO_OV7740=m
+-CONFIG_VIDEO_MT9V032=m
+ CONFIG_DRM=y
+ CONFIG_DRM_ATMEL_HLCDC=y
+ CONFIG_DRM_PANEL_SIMPLE=y
+@@ -329,17 +330,15 @@ CONFIG_NLS_CODEPAGE_437=y
+ CONFIG_NLS_CODEPAGE_850=y
+ CONFIG_NLS_ISO8859_1=y
+ CONFIG_NLS_UTF8=y
+-CONFIG_CRYPTO_CCM=y
+-CONFIG_CRYPTO_GCM=y
++CONFIG_CRYPTO_DES=y
++CONFIG_CRYPTO_ARC4=y
+ CONFIG_CRYPTO_CBC=y
+ CONFIG_CRYPTO_CFB=y
+ CONFIG_CRYPTO_OFB=y
+ CONFIG_CRYPTO_XTS=y
+-CONFIG_CRYPTO_HMAC=y
++CONFIG_CRYPTO_CCM=y
++CONFIG_CRYPTO_GCM=y
+ CONFIG_CRYPTO_SHA1=y
+-CONFIG_CRYPTO_ARC4=y
+-CONFIG_CRYPTO_SHA512=y
+-CONFIG_CRYPTO_DES=y
+ CONFIG_CRYPTO_USER_API_HASH=m
+ CONFIG_CRYPTO_USER_API_SKCIPHER=m
+ CONFIG_CRYPTO_DEV_ATMEL_AES=y
+diff --git a/board/microchip/sama5d27_som1_ek/uboot-env.txt b/board/microchip/sama5d27_som1_ek/uboot-env.txt
+index 60224cf..4e32a30 100644
+--- a/board/microchip/sama5d27_som1_ek/uboot-env.txt
++++ b/board/microchip/sama5d27_som1_ek/uboot-env.txt
+@@ -4,9 +4,9 @@ at91_prepare_overlays_config=test -n $display_var && setenv at91_overlays_config
+ at91_prepare_video_bootargs=test -n $display_var && setenv at91_video_bootargs video=${video_mode}
+ at91_set_display=test -n $pda && setenv display $pda
+ board_name=sama5d27_som1_ek
+-bootargs=console=ttyS0,115200 root=/dev/mmcblk0p2 rw rootwait rootfstype=ext4 atmel.pm_modes=standby,ulp1
++bootargs=console=ttyS0,115200 root=ubi0:rootfs rw rootwait rootfstype=ubifs ubi.mtd=5 ubi.fm_autoconvert=1 atmel.pm_modes=standby,ulp1
+ bootcmd=run at91_set_display; run at91_pda_detect; run at91_prepare_video_bootargs; run at91_prepare_bootargs; run at91_prepare_overlays_config; run bootcmd_boot;
+-bootcmd_boot=fatload mmc 0:1 ${loadaddr} ${board_name}.itb; bootm ${loadaddr}#kernel_dtb${at91_overlays_config};
++bootcmd_boot=nand read ${loadaddr} 0x200000 0x600000; bootm ${loadaddr}#kernel_dtb${at91_overlays_config};
+ bootdelay=1
+ loadaddr=0x21000000
+ pda4300test=test -n $display && test $display = 4300 && setenv display_var 'pda4' && setenv video_mode ${video_mode_pda4}
+diff --git a/configs/sama5d27_som1_ek_headless_defconfig b/configs/sama5d27_som1_ek_headless_defconfig
+index e4899c5..494267b 100644
+--- a/configs/sama5d27_som1_ek_headless_defconfig
++++ b/configs/sama5d27_som1_ek_headless_defconfig
+@@ -5,7 +5,6 @@ BR2_ARM_ENABLE_VFP=y
+ BR2_ARM_INSTRUCTIONS_THUMB2=y
+ BR2_GLOBAL_PATCH_DIR="$(BR2_EXTERNAL_MCHP_PATH)/patches"
+ BR2_TOOLCHAIN_BUILDROOT_GLIBC=y
+-BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_6_1=y
+ BR2_TOOLCHAIN_BUILDROOT_CXX=y
+ BR2_PACKAGE_HOST_GDB=y
+ BR2_PACKAGE_HOST_GDB_TUI=y
+@@ -56,30 +55,21 @@ BR2_PACKAGE_SETSERIAL=y
+ BR2_PACKAGE_SPI_TOOLS=y
+ BR2_PACKAGE_USBUTILS=y
+ BR2_PACKAGE_LUA=y
+-BR2_PACKAGE_NODEJS=y
+-BR2_PACKAGE_NODEJS_NPM=y
+-BR2_PACKAGE_PYTHON3=y
+-BR2_PACKAGE_PYTHON3_PY_PYC=y
+-BR2_PACKAGE_PYTHON3_CURSES=y
+-BR2_PACKAGE_PYTHON3_READLINE=y
+-BR2_PACKAGE_PYTHON_CANOPEN=y
+-BR2_PACKAGE_PYTHON_CRYPTOGRAPHY=y
+-BR2_PACKAGE_PYTHON_IPY=y
+-BR2_PACKAGE_PYTHON_PIP=y
+-BR2_PACKAGE_PYTHON_SERIAL_ASYNCIO=y
+-BR2_PACKAGE_PYTHON_SMBUS_CFFI=y
+-BR2_PACKAGE_PYTHON_SPIDEV=y
+ BR2_PACKAGE_CA_CERTIFICATES=y
+ BR2_PACKAGE_GNUTLS=y
+ BR2_PACKAGE_GNUTLS_TOOLS=y
+-BR2_PACKAGE_LIBGPIOD=y
+-BR2_PACKAGE_LIBGPIOD_TOOLS=y
+ BR2_PACKAGE_LIBP11=y
+ BR2_PACKAGE_LIBOPENSSL_BIN=y
+ BR2_PACKAGE_LIBOPENSSL_ENGINES=y
++BR2_PACKAGE_SQLITE=y
++BR2_PACKAGE_LIBGPIOD=y
++BR2_PACKAGE_LIBGPIOD_TOOLS=y
+ BR2_PACKAGE_LIBINPUT=y
+ BR2_PACKAGE_CJSON=y
++BR2_PACKAGE_C_ARES=y
++BR2_PACKAGE_NGHTTP2=y
+ BR2_PACKAGE_LIBSECCOMP=y
++BR2_PACKAGE_LIBUV=y
+ BR2_PACKAGE_P11_KIT=y
+ BR2_PACKAGE_BLUEZ5_UTILS=y
+ BR2_PACKAGE_BLUEZ5_UTILS_CLIENT=y
+@@ -99,12 +89,11 @@ BR2_PACKAGE_DHCP_SERVER=y
+ BR2_PACKAGE_DHCP_SERVER_DELAYED_ACK=y
+ BR2_PACKAGE_DHCP_RELAY=y
+ BR2_PACKAGE_DHCPCD=y
+-# BR2_PACKAGE_DROPBEAR is not set
+ BR2_PACKAGE_ETHTOOL=y
+ BR2_PACKAGE_HOSTAPD=y
+ BR2_PACKAGE_HOSTAPD_EAP=y
+-BR2_PACKAGE_HOSTAPD_WPA3=y
+ BR2_PACKAGE_HOSTAPD_WPS=y
++BR2_PACKAGE_HOSTAPD_WPA3=y
+ BR2_PACKAGE_IFUPDOWN=y
+ BR2_PACKAGE_IPERF3=y
+ BR2_PACKAGE_IPROUTE2=y
+@@ -129,51 +118,53 @@ BR2_PACKAGE_WPA_SUPPLICANT_AP_SUPPORT=y
+ BR2_PACKAGE_WPA_SUPPLICANT_AUTOSCAN=y
+ BR2_PACKAGE_WPA_SUPPLICANT_EAP=y
+ BR2_PACKAGE_WPA_SUPPLICANT_DEBUG_SYSLOG=y
+-BR2_PACKAGE_WPA_SUPPLICANT_WPA3=y
+ BR2_PACKAGE_WPA_SUPPLICANT_WPS=y
++BR2_PACKAGE_WPA_SUPPLICANT_WPA3=y
+ BR2_PACKAGE_WPA_SUPPLICANT_CLI=y
+-BR2_PACKAGE_BASH=y
+ BR2_PACKAGE_BASH_COMPLETION=y
+ BR2_PACKAGE_FILE=y
++BR2_PACKAGE_NEOFETCH=y
+ BR2_PACKAGE_TIME=y
+ BR2_PACKAGE_WHICH=y
+ BR2_PACKAGE_ACL=y
++BR2_PACKAGE_HTOP=y
+ BR2_PACKAGE_TAR=y
+ BR2_PACKAGE_UTIL_LINUX_BINARIES=y
+ BR2_PACKAGE_LESS=y
+ BR2_PACKAGE_NANO=y
+ BR2_PACKAGE_VIM=y
+-BR2_PACKAGE_HTOP=y
+-BR2_PACKAGE_NEOFETCH=y
+ BR2_TARGET_ROOTFS_EXT2=y
+ BR2_TARGET_ROOTFS_EXT2_4=y
+ BR2_TARGET_ROOTFS_EXT2_SIZE="512M"
++BR2_TARGET_ROOTFS_UBI=y
++BR2_TARGET_ROOTFS_UBI_PEBSIZE=0x40000
++BR2_TARGET_ROOTFS_UBI_SUBSIZE=0
++BR2_TARGET_ROOTFS_UBIFS_LEBSIZE=0x3e000
++BR2_TARGET_ROOTFS_UBIFS_MINIOSIZE=0x1000
+ BR2_TARGET_AT91BOOTSTRAP3=y
+ BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_GIT=y
+ BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_REPO_URL="https://github.com/linux4sam/at91bootstrap.git"
+ BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_REPO_VERSION="v4.0.6"
+-BR2_TARGET_AT91BOOTSTRAP3_DEFCONFIG="sama5d27_som1_eksd_uboot"
++BR2_TARGET_AT91BOOTSTRAP3_DEFCONFIG="sama5d27_som1_eknf_uboot"
+ BR2_TARGET_UBOOT=y
+ BR2_TARGET_UBOOT_BUILD_SYSTEM_KCONFIG=y
+ BR2_TARGET_UBOOT_CUSTOM_GIT=y
+ BR2_TARGET_UBOOT_CUSTOM_REPO_URL="https://github.com/linux4sam/u-boot-at91.git"
+ BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION="linux4sam-2023.04"
+-BR2_TARGET_UBOOT_BOARD_DEFCONFIG="sama5d27_som1_ek_mmc"
++BR2_TARGET_UBOOT_BOARD_DEFCONFIG="sama5d2_ptc_ek_nandflash"
+ BR2_TARGET_UBOOT_NEEDS_DTC=y
+ BR2_PACKAGE_HOST_DOSFSTOOLS=y
++BR2_PACKAGE_HOST_ENVIRONMENT_SETUP=y
+ BR2_PACKAGE_HOST_GENIMAGE=y
+ BR2_PACKAGE_HOST_MTOOLS=y
++BR2_PACKAGE_HOST_NODEJS=y
+ BR2_PACKAGE_HOST_UBOOT_TOOLS=y
+ BR2_PACKAGE_HOST_UBOOT_TOOLS_FIT_SUPPORT=y
+ BR2_PACKAGE_HOST_UBOOT_TOOLS_ENVIMAGE=y
+ BR2_PACKAGE_HOST_UBOOT_TOOLS_ENVIMAGE_SOURCE="$(BR2_EXTERNAL_MCHP_PATH)/board/microchip/sama5d27_som1_ek/uboot-env.txt"
+-BR2_PACKAGE_HOST_UBOOT_TOOLS_ENVIMAGE_SIZE="0x4000"
++BR2_PACKAGE_HOST_UBOOT_TOOLS_ENVIMAGE_SIZE="0x40000"
++BR2_PACKAGE_HOST_UBOOT_TOOLS_ENVIMAGE_REDUNDANT=y
+ BR2_PACKAGE_DT_OVERLAY_MCHP=y
+ BR2_PACKAGE_DT_OVERLAY_MCHP_PLATFORM="sama5d27_som1_ek"
+-BR2_PACKAGE_PYTHON_MPIO=y
+ BR2_PACKAGE_WILC_FIRMWARE=y
+ BR2_PACKAGE_9BIT=y
+-BR2_PACKAGE_CRYPTOAUTHLIB=y
+-BR2_PACKAGE_CRYPTOAUTHLIB_SAMA5D27_SOM1_EK=y
+-BR2_PACKAGE_PYTHON_CRYPTOAUTHLIB=y
+-BR2_PACKAGE_HOST_ENVIRONMENT_SETUP=y
+diff --git a/patches/at91bootstrap3/0000-at91bootstrap-based-on-v4.0.6.patch b/patches/at91bootstrap3/0000-at91bootstrap-based-on-v4.0.6.patch
+new file mode 100644
+index 0000000..e51d30a
+--- /dev/null
++++ b/patches/at91bootstrap3/0000-at91bootstrap-based-on-v4.0.6.patch
+@@ -0,0 +1,20 @@
++diff --git a/configs/sama5d27_som1_eknf_uboot_defconfig b/configs/sama5d27_som1_eknf_uboot_defconfig
++new file mode 100644
++index 00000000..de120119
++--- /dev/null
+++++ b/configs/sama5d27_som1_eknf_uboot_defconfig
++@@ -0,0 +1,14 @@
+++CONFIG_CRYSTAL_24_000MHZ=y
+++CONFIG_DEBUG=y
+++CONFIG_DDR_SET_BY_DEVICE=y
+++CONFIG_DDR_W971GG6SB_D2=y
+++CONFIG_NANDFLASH=y
+++CONFIG_JUMP_ADDR="0x23f00000"
+++CONFIG_BOARD_QUIRK_SAMA5D2_SIP=y
+++CONFIG_LED_ON_BOARD=y
+++CONFIG_LED_R_ON_PIOA=y
+++CONFIG_LED_R_PIN=10
+++CONFIG_LED_G_ON_PIOB=y
+++CONFIG_LED_G_PIN=1
+++CONFIG_LED_B_ON_PIOA=y
+++CONFIG_LED_B_PIN=31
+diff --git a/patches/linux/0000-linux-based-on-linux4microchip-2023.04.patch b/patches/linux/0000-linux-based-on-linux4microchip-2023.04.patch
+new file mode 100644
+index 0000000..8490118
+--- /dev/null
++++ b/patches/linux/0000-linux-based-on-linux4microchip-2023.04.patch
+@@ -0,0 +1,175 @@
++diff --git a/arch/arm/boot/dts/at91-sama5d27_som1_ek.dts b/arch/arm/boot/dts/at91-sama5d27_som1_ek.dts
++index 0dc6ca377b0c..2c84f578c607 100644
++--- a/arch/arm/boot/dts/at91-sama5d27_som1_ek.dts
+++++ b/arch/arm/boot/dts/at91-sama5d27_som1_ek.dts
++@@ -12,6 +12,7 @@
++ #include <dt-bindings/mfd/atmel-flexcom.h>
++ #include <dt-bindings/gpio/gpio.h>
++ #include <dt-bindings/input/input.h>
+++#include <dt-bindings/pinctrl/at91.h>
++ 
++ / {
++ 	model = "Atmel SAMA5D27 SOM1 EK";
++@@ -39,10 +40,10 @@ usb0: gadget@300000 {
++ 
++ 		usb1: ohci@400000 {
++ 			num-ports = <3>;
++-			atmel,vbus-gpio = <0 /* &pioA PIN_PD20 GPIO_ACTIVE_HIGH */
++-					   &pioA PIN_PA27 GPIO_ACTIVE_HIGH
++-					   0
++-					  >;
+++			//atmel,vbus-gpio = <0 /* &pioA PIN_PD20 GPIO_ACTIVE_HIGH */
+++			//		   &pioA PIN_PA27 GPIO_ACTIVE_HIGH
+++			//		   0
+++			//		  >;
++ 			pinctrl-names = "default";
++ 			pinctrl-0 = <&pinctrl_usb_default>;
++ 			status = "okay";
++@@ -52,6 +53,61 @@ usb2: ehci@500000 {
++ 			status = "okay";
++ 		};
++ 
+++		ebi: ebi@10000000 {
+++			pinctrl-names = "default";
+++			pinctrl-0 = <&pinctrl_nand_default>;
+++			status = "okay"; /* conflicts with sdmmc1 and qspi0 */
+++
+++			nand_controller: nand-controller {
+++				status = "okay";
+++
+++				nand@3 {
+++					reg = <0x3 0x0 0x2>;
+++					atmel,rb = <0>;
+++					nand-bus-width = <8>;
+++					nand-ecc-mode = "hw";
+++					nand-on-flash-bbt;
+++					label = "atmel_nand";
+++
+++					partitions {
+++						compatible = "fixed-partitions";
+++						#address-cells = <1>;
+++						#size-cells = <1>;
+++
+++						at91bootstrap@0 {
+++							label = "bootstrap";
+++							reg = <0x0 0x40000>;
+++						};
+++
+++						bootloader@40000 {
+++							label = "bootloader";
+++							reg = <0x40000 0xc0000>;
+++						};
+++
+++						bootloaderenvred@100000 {
+++							label = "bootloader env redundant";
+++							reg = <0x100000 0x40000>;
+++						};
+++
+++						bootloaderenv@140000 {
+++							label = "bootloader env";
+++							reg = <0x140000 0x40000>;
+++						};
+++
+++						kernel@200000 {
+++							label = "kernel";
+++							reg = <0x200000 0x600000>;
+++						};
+++
+++						rootfs@800000 {
+++							label = "rootfs";
+++							reg = <0x800000 0x1f800000>;
+++						};
+++					};
+++				};
+++			};
+++		};
+++
++ 		sdmmc0: sdio-host@a0000000 {
++ 			bus-width = <8>;
++ 			mmc-ddr-3_3v;
++@@ -64,7 +120,7 @@ sdmmc1: sdio-host@b0000000 {
++ 			bus-width = <4>;
++ 			pinctrl-names = "default";
++ 			pinctrl-0 = <&pinctrl_sdmmc1_default>;
++-			status = "okay";
+++			status = "disabled"; /* conflicts with nand */
++ 		};
++ 
++ 		apb {
++@@ -123,7 +179,7 @@ pwm0: pwm@f802c000 {
++ 
++ 			flx1: flexcom@f8038000 {
++ 				atmel,flexcom-mode = <ATMEL_FLEXCOM_MODE_TWI>;
++-				status = "okay";
+++				status = "disabled";
++ 
++ 				i2c3: i2c@600 {
++ 					dmas = <0>, <0>;
++@@ -135,7 +191,7 @@ i2c3: i2c@600 {
++ 					pinctrl-1 = <&pinctrl_i2c3_gpio>;
++ 					sda-gpios = <&pioA PIN_PA24 GPIO_ACTIVE_HIGH>;
++ 					scl-gpios = <&pioA PIN_PA23 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++-					status = "okay";
+++					status = "disabled";
++ 				};
++ 			};
++ 
++@@ -309,6 +365,31 @@ pinctrl_led_gpio_default: led_gpio_default {
++ 					bias-pull-up;
++ 				};
++ 
+++				pinctrl_nand_default: nand_default {
+++					re_we_data {
+++						pinmux = <PIN_PA22__D0>,
+++							 <PIN_PA23__D1>,
+++							 <PIN_PA24__D2>,
+++							 <PIN_PA25__D3>,
+++							 <PIN_PA26__D4>,
+++							 <PIN_PA27__D5>,
+++							 <PIN_PA28__D6>,
+++							 <PIN_PA29__D7>,
+++							 <PIN_PA30__NWE_NANDWE>,
+++							 <PIN_PB2__NRD_NANDOE>;
+++						bias-pull-up;
+++						atmel,drive-strength = <ATMEL_PIO_DRVSTR_ME>;
+++					};
+++
+++					ale_cle_rdy_cs {
+++						pinmux = <PIN_PB0__A21_NANDALE>,
+++							 <PIN_PB1__A22_NANDCLE>,
+++							 <PIN_PA21__NANDRDY>,
+++							 <PIN_PA31__NCS3>;
+++						bias-pull-up;
+++					};
+++				};
+++
++ 				pinctrl_sdmmc0_default: sdmmc0_default {
++ 					cmd_data {
++ 						pinmux = <PIN_PA1__SDMMC0_CMD>,
++@@ -369,8 +450,7 @@ pinctrl_uart3_default: uart3_default {
++ 				};
++ 
++ 				pinctrl_usb_default: usb_default {
++-					pinmux = <PIN_PA27__GPIO>,
++-						 <PIN_PD19__GPIO>;
+++					pinmux = <PIN_PD19__GPIO>;
++ 					bias-disable;
++ 				};
++ 
++@@ -483,6 +563,7 @@ gpio-keys {
++ 
++ 		pinctrl-names = "default";
++ 		pinctrl-0 = <&pinctrl_key_gpio_default>;
+++		status = "disabled";
++ 
++ 		button {
++ 			label = "USER";
++@@ -496,7 +577,7 @@ leds {
++ 		compatible = "gpio-leds";
++ 		pinctrl-names = "default";
++ 		pinctrl-0 = <&pinctrl_led_gpio_default>;
++-		status = "okay"; /* Conflict with pwm0. */
+++		status = "disabled"; /* Conflict with pwm0. */
++ 
++ 		red {
++ 			label = "red";
+diff --git a/patches/uboot/0000-uboot-based-on-linux4sam-2023.04.patch b/patches/uboot/0000-uboot-based-on-linux4sam-2023.04.patch
+new file mode 100644
+index 0000000..20d10b8
+--- /dev/null
++++ b/patches/uboot/0000-uboot-based-on-linux4sam-2023.04.patch
+@@ -0,0 +1,121 @@
++diff --git a/arch/arm/dts/at91-sama5d2_ptc_ek.dts b/arch/arm/dts/at91-sama5d2_ptc_ek.dts
++index 0059e21b49..a2921d904e 100644
++--- a/arch/arm/dts/at91-sama5d2_ptc_ek.dts
+++++ b/arch/arm/dts/at91-sama5d2_ptc_ek.dts
++@@ -53,7 +53,7 @@
++ 
++ 	chosen {
++ 		u-boot,dm-pre-reloc;
++-		stdout-path = &uart0;
+++		stdout-path = &uart1;
++ 	};
++ 
++ 	clocks {
++@@ -132,6 +132,13 @@
++ 			uart0: serial@f801c000 {
++ 				pinctrl-names = "default";
++ 				pinctrl-0 = <&pinctrl_uart0_default>;
+++				status = "disabled";
+++				u-boot,dm-pre-reloc;
+++			};
+++
+++			uart1: serial@f8020000 {
+++				pinctrl-names = "default";
+++				pinctrl-0 = <&pinctrl_uart1_default>;
++ 				status = "okay";
++ 				u-boot,dm-pre-reloc;
++ 			};
++@@ -224,6 +231,13 @@
++ 					u-boot,dm-pre-reloc;
++ 				};
++ 
+++				pinctrl_uart1_default: uart1_default {
+++					pinmux = <PIN_PD2__URXD1>,
+++						 <PIN_PD3__UTXD1>;
+++					bias-disable;
+++					u-boot,dm-pre-reloc;
+++				};
+++
++ 				pinctrl_usb_default: usb_default {
++ 					pinmux = <PIN_PB12__GPIO>;
++ 					bias-disable;
++diff --git a/board/atmel/sama5d2_ptc_ek/sama5d2_ptc_ek.c b/board/atmel/sama5d2_ptc_ek/sama5d2_ptc_ek.c
++index 16e9183f54..cbba520b31 100644
++--- a/board/atmel/sama5d2_ptc_ek/sama5d2_ptc_ek.c
+++++ b/board/atmel/sama5d2_ptc_ek/sama5d2_ptc_ek.c
++@@ -91,17 +91,17 @@ static void board_usb_hw_init(void)
++ #endif
++ 
++ #ifdef CONFIG_DEBUG_UART_BOARD_INIT
++-static void board_uart0_hw_init(void)
+++static void board_uart1_hw_init(void)
++ {
++-	atmel_pio4_set_c_periph(AT91_PIO_PORTB, 26, ATMEL_PIO_PUEN_MASK);	/* URXD0 */
++-	atmel_pio4_set_c_periph(AT91_PIO_PORTB, 27, 0);	/* UTXD0 */
+++	atmel_pio4_set_a_periph(AT91_PIO_PORTD, 2, ATMEL_PIO_PUEN_MASK);	/* URXD0 */
+++	atmel_pio4_set_a_periph(AT91_PIO_PORTD, 3, 0);	/* UTXD0 */
++ 
++-	at91_periph_clk_enable(ATMEL_ID_UART0);
+++	at91_periph_clk_enable(ATMEL_ID_UART1);
++ }
++ 
++ void board_debug_uart_init(void)
++ {
++-	board_uart0_hw_init();
+++	board_uart1_hw_init();
++ }
++ #endif
++ 
++diff --git a/configs/sama5d2_ptc_ek_nandflash_defconfig b/configs/sama5d2_ptc_ek_nandflash_defconfig
++index 50fe27431c..bbae66edfc 100644
++--- a/configs/sama5d2_ptc_ek_nandflash_defconfig
+++++ b/configs/sama5d2_ptc_ek_nandflash_defconfig
++@@ -2,14 +2,15 @@ CONFIG_ARM=y
++ CONFIG_SKIP_LOWLEVEL_INIT=y
++ CONFIG_ARCH_CPU_INIT=y
++ CONFIG_ARCH_AT91=y
++-CONFIG_SYS_TEXT_BASE=0x26f00000
+++CONFIG_SYS_TEXT_BASE=0x23f00000
++ CONFIG_SYS_MALLOC_F_LEN=0x8000
++ CONFIG_TARGET_SAMA5D2_PTC_EK=y
++ CONFIG_NR_DRAM_BANKS=1
+++CONFIG_ENV_SIZE=0x40000
++ CONFIG_DM_GPIO=y
++ CONFIG_DEFAULT_DEVICE_TREE="at91-sama5d2_ptc_ek"
++ CONFIG_DEBUG_UART_BOARD_INIT=y
++-CONFIG_DEBUG_UART_BASE=0xf801c000
+++CONFIG_DEBUG_UART_BASE=0xf8020000
++ CONFIG_DEBUG_UART_CLOCK=82000000
++ CONFIG_ENV_OFFSET_REDUND=0x100000
++ CONFIG_DEBUG_UART=y
++@@ -26,8 +27,8 @@ CONFIG_MISC_INIT_R=y
++ CONFIG_HUSH_PARSER=y
++ CONFIG_CMD_BOOTZ=y
++ CONFIG_CMD_DM=y
++-CONFIG_CMD_GPIO=y
++ # CONFIG_CMD_FLASH is not set
+++CONFIG_CMD_GPIO=y
++ CONFIG_CMD_I2C=y
++ # CONFIG_CMD_LOADS is not set
++ CONFIG_CMD_MMC=y
++@@ -64,7 +65,7 @@ CONFIG_MMC_SDHCI_ATMEL=y
++ CONFIG_MTD=y
++ CONFIG_NAND_ATMEL=y
++ CONFIG_ATMEL_NAND_HW_PMECC=y
++-CONFIG_PMECC_CAP=4
+++CONFIG_PMECC_CAP=8
++ CONFIG_SYS_NAND_ONFI_DETECTION=y
++ CONFIG_DM_ETH=y
++ CONFIG_MACB=y
++@@ -73,10 +74,9 @@ CONFIG_PINCTRL_AT91PIO4=y
++ CONFIG_DM_SERIAL=y
++ CONFIG_DEBUG_UART_ANNOUNCE=y
++ CONFIG_ATMEL_USART=y
++-CONFIG_TIMER=y
++ CONFIG_SYSRESET=y
++-CONFIG_SYSRESET_CMD_RESET=y
++ CONFIG_SYSRESET_AT91=y
+++CONFIG_TIMER=y
++ CONFIG_ATMEL_TCB_TIMER=y
++ CONFIG_USB=y
++ CONFIG_USB_EHCI_HCD=y
