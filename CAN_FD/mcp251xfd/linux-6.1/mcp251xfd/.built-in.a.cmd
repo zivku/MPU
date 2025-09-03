@@ -1,0 +1,1 @@
+savedcmd_drivers/net/can/spi/mcp251xfd/built-in.a := rm -f drivers/net/can/spi/mcp251xfd/built-in.a;  /home/zivku/git/som1_wayne_202404/buildroot-mchp/output/host/bin/arm-buildroot-linux-gnueabihf-ar cDPrST drivers/net/can/spi/mcp251xfd/built-in.a

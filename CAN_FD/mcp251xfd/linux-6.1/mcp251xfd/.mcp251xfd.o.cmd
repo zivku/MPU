@@ -1,0 +1,1 @@
+savedcmd_drivers/net/can/spi/mcp251xfd/mcp251xfd.o := /home/zivku/git/som1_wayne_202404/buildroot-mchp/output/host/bin/arm-buildroot-linux-gnueabihf-ld  -EL -z noexecstack --no-warn-rwx-segments    -r -o drivers/net/can/spi/mcp251xfd/mcp251xfd.o @drivers/net/can/spi/mcp251xfd/mcp251xfd.mod 

@@ -1,0 +1,31 @@
+!<thin>
+//                                              270       `
+mcp25xxfd_base.o/
+mcp25xxfd_can.o/
+mcp25xxfd_can_debugfs.o/
+mcp25xxfd_can_fifo.o/
+mcp25xxfd_can_int.o/
+mcp25xxfd_can_rx.o/
+mcp25xxfd_can_tx.o/
+mcp25xxfd_clock.o/
+mcp25xxfd_cmd.o/
+mcp25xxfd_crc.o/
+mcp25xxfd_debugfs.o/
+mcp25xxfd_ecc.o/
+mcp25xxfd_gpio.o/
+mcp25xxfd_int.o/
+
+/0              0           0     0     644     6816      `
+/18            /0           0     0     644     8592      `
+/35             0           0     0     644     8260      `
+/60             0           0     0     644     4588      `
+/82             0           0     0     644     7976      `
+/103            0           0     0     644     4800      `
+/123            0           0     0     644     7716      `
+/143            0           0     0     644     4748      `
+/162           /0           0     0     644     5708      `
+/179           /0           0     0     644     2076      `
+/196            0           0     0     644     3580      `
+/217           /0           0     0     644     2556      `
+/234            0           0     0     644     2812      `
+/252           /0           0     0     644     1760      `
